@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from forms import TranslationForm
-import subprocess  # To execute test.py
+# import subprocess  # To execute test.py
+from single_page import process_all_page
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'  # Required for CSRF protection
@@ -40,7 +42,8 @@ def index():
         domain = form.domain.data
         
         # Pass the form data to test.py
-        subprocess.run(['python', 'single_page.py', website_url, lang_code, php_template, css_class, domain])
+        # subprocess.run(['python', 'single_page.py', website_url, lang_code, php_template, css_class, domain])
+        process_all_page(website_url, lang_code, php_template, css_class, domain)
         
         return redirect(url_for('success'))  # Redirect to a success page
     
