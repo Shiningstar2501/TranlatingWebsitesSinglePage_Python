@@ -59,11 +59,13 @@ def index():
 
 @app.route('/success')
 def success():
-    return "Form submitted successfully. Translation is processing in the background."
+    filename = request.args.get('filename')
+    return f"Translation is in progress. When it's ready, <a href='/download/{filename}'>click here to download</a>."
 
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_from_directory('translated_pages', filename, as_attachment=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
