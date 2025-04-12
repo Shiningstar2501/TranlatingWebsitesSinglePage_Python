@@ -50,21 +50,37 @@ def index():
         css_class = form.css_class.data
         domain = form.domain.data
 
+        # ✅ Define file_name BEFORE using it
+        file_name = f"{lang_code}_{website_url.strip('/').replace('https://', '').replace('http://', '').replace('/', '_')}.php"
+
+        # ✅ Start background thread
         thread = Thread(target=process_all_page, args=(website_url, lang_code, php_template, css_class, domain))
         thread.start()
 
+        # ✅ Redirect to success with file_name
         return redirect(url_for('success', filename=file_name))
 
     return render_template('index.html', form=form)
 
+
 @app.route('/success')
 def success():
     filename = request.args.get('filename')
-    return f"Translation is in progress. When it's ready, <a href='/download/{filename}'>click here to download</a>."
+    if not filename:
+        return "Error: No filename provided.", 400
 
-@app.route('/download/<filename>')
-def download_file(filename):
-    return send_from_directory('translated_pages', filename, as_attachment=True)
+    return f"""
+        <html>
+        <head>
+            <meta http-equiv="refresh" content="5;url=/download/{filename}">
+        </head>
+        <body>
+            <p>Your file is being processed. It will auto-download soon.</p>
+            <p>If not, <a href='/download/{filename}'>click here</a>.</p>
+        </body>
+        </html>
+    """
+
 
 
 if __name__ == '__main__':
