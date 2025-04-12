@@ -72,7 +72,6 @@ def success():
     return f"""
         <html>
         <head>
-            # <meta http-equiv="refresh" content="5;url=/download/{filename}">
         </head>
         <body>
             <p>Your file is being processed. It will auto-download soon.</p>
