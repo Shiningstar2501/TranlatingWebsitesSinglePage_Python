@@ -53,7 +53,7 @@ def index():
         thread = Thread(target=process_all_page, args=(website_url, lang_code, php_template, css_class, domain))
         thread.start()
 
-        return redirect(url_for('success'))
+        return redirect(url_for('success', filename=file_name))
 
     return render_template('index.html', form=form)
 
